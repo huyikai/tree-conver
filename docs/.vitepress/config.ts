@@ -10,6 +10,7 @@ export default async () => {
       ['link', { rel: 'icon', href: 'favicon.ico' }] //浏览器标签icon
     ],
     themeConfig: {
+      base: '/tree-conver/',
       pages, // 所有页面
       siteTitle: 'Tree-Conver', //导航栏左侧名称
       // logo: '/static/nav-logo.svg', //导航栏左侧头像
