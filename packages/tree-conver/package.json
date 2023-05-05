@@ -1,6 +1,6 @@
 {
   "name": "tree-conver",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "Tree data conversion tool",
   "keywords": [
     "tree",
@@ -30,5 +30,11 @@
   "devDependencies": {
     "@types/node": "^18.16.3",
     "typescript": "^5.0.4"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
