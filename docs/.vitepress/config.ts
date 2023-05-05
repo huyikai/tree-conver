@@ -4,13 +4,13 @@ import docsData from '@vitepress-custom/vitepress-plugin-fetch-docs';
 export default async () => {
   let pages = await docsData();
   return {
+    base: '/tree-conver/',
     title: 'Tree-Conver',
     description: 'Tree data conversion tool',
     head: [
       ['link', { rel: 'icon', href: 'favicon.ico' }] //浏览器标签icon
     ],
     themeConfig: {
-      base: '/tree-conver/',
       pages, // 所有页面
       siteTitle: 'Tree-Conver', //导航栏左侧名称
       // logo: '/static/nav-logo.svg', //导航栏左侧头像
