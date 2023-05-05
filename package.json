@@ -1,0 +1,33 @@
+{
+  "name": "tree-conver",
+  "version": "0.0.0",
+  "private": false,
+  "description": "vitepress-custom",
+  "keywords": [
+    "vitepress-custom",
+    "vitepress"
+  ],
+  "license": "MIT",
+  "author": "huyikai",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "docs"
+  ],
+  "scripts": {
+    "build": "vitepress build docs",
+    "dev": "vitepress dev docs",
+    "serve": "vitepress serve docs"
+  },
+  "devDependencies": {
+    "@vitepress-custom/vitepress-plugin-fetch-docs": "^0.0.5",
+    "@vitepress-custom/vitepress-plugin-nav": "^0.0.7",
+    "@vitepress-custom/vitepress-plugin-sidebar": "^0.0.8",
+    "sass": "^1.56.1",
+    "vitepress": "^1.0.0-alpha.75",
+    "vue": "^3.2.45"
+  },
+  "workspaces": [
+    "packages/tree-conver"
+  ]
+}

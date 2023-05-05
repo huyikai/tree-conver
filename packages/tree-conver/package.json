@@ -1,0 +1,34 @@
+{
+  "name": "tree-conver",
+  "version": "0.0.0",
+  "description": "Tree data conversion tool",
+  "keywords": [
+    "tree",
+    "treeData",
+    "treeTransformer",
+    "treeConer",
+    "treeToArray"
+  ],
+  "homepage": "https://github.com/huyikai/tree-conver#readme",
+  "bugs": {
+    "url": "https://github.com/huyikai/tree-conver/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huyikai/tree-conver.git"
+  },
+  "license": "MIT",
+  "author": "huyikai",
+  "type": "module",
+  "main": "dist/index.js",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "typescript": "^5.0.4"
+  }
+}
