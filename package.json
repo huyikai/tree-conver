@@ -14,20 +14,40 @@
   "files": [
     "docs"
   ],
+  "workspaces": [
+    "packages/tree-conver"
+  ],
   "scripts": {
     "build": "vitepress build docs",
     "dev": "vitepress dev docs",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
+    "lint:style": "stylelint \"./docs/**/*.{css,scss,vue,html}\" --fix",
+    "prepare": "husky install",
     "serve": "vitepress serve docs"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts}": [
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
     "@vitepress-custom/vitepress-plugin-fetch-docs": "^0.0.5",
     "@vitepress-custom/vitepress-plugin-nav": "^0.0.7",
     "@vitepress-custom/vitepress-plugin-sidebar": "^0.0.8",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "@vue/eslint-config-typescript": "^11.0.3",
+    "eslint": "^8.40.0",
+    "eslint-plugin-vue": "^9.11.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "postcss-html": "^1.5.0",
+    "postcss-scss": "^4.0.6",
+    "prettier": "^2.8.8",
     "sass": "^1.56.1",
+    "stylelint": "^15.6.1",
+    "stylelint-config-standard": "^33.0.0",
+    "stylelint-order": "^6.0.3",
     "vitepress": "^1.0.0-alpha.75",
     "vue": "^3.2.45"
-  },
-  "workspaces": [
-    "packages/tree-conver"
-  ]
+  }
 }

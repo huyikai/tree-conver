@@ -1,0 +1,13 @@
+node_modules
+.DS_Store
+*.local
+
+# 其他类型文件
+*.js
+*.ts
+*.md
+*.jpg
+*.json
+*.woff
+
+dist

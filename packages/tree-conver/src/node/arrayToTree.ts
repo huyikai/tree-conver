@@ -1,9 +1,9 @@
 interface Node {
-    id: string; // 节点的唯一标识符
-    name: string; // 节点的名字
-    children?: Array<Node>; // 节点的子节点数组
-    pid?: string; // 节点的父节点标识符
-  }
+  id: string; // 节点的唯一标识符
+  name: string; // 节点的名字
+  children?: Array<Node>; // 节点的子节点数组
+  pid?: string; // 节点的父节点标识符
+}
 export const arrayToTree = (array: Array<Node>) => {
   const map = array.reduce((acc: Record<string, Node>, node) => {
     // 构建节点id到节点的映射
