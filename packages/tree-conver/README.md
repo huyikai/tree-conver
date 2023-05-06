@@ -1,8 +1,15 @@
 # Tree-Conver
 
-## Description
-
 Tree data conversion tool
+
+## Website
+
+[huyikai.github.io/tree-conver/](https://huyikai.github.io/tree-conver/)
+
+## Features
+
+- can convert tree data to flat array
+
 ## Usage
 
 ```shell
@@ -29,4 +36,5 @@ arrayToTree(array)
 [MIT](./license)
 
 ## Repository
+
 https://github.com/huyikai/tree-conver.git
