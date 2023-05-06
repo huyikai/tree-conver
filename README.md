@@ -36,4 +36,4 @@ arrayToTree(array)
 [MIT](./license)
 
 ## Repository
-https://github.com/huyikai/tree-conver.git
+https://github.com/vue-drag/vue3-drag-utils.git
