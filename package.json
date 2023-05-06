@@ -28,6 +28,9 @@
   "lint-staged": {
     "*.{js,jsx,vue,ts}": [
       "eslint --fix"
+    ],
+    "*.{less,scss,css,vue}": [
+      "stylelint --fix"
     ]
   },
   "devDependencies": {
