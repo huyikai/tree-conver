@@ -1,12 +1,27 @@
 # arrayToTree
 
-以下是几种使用arrayToTree方法的示例
+以下是几种使用 arrayToTree 方法的示例
+
+<script>
+    import {arrayToTree,treeToArray} from "tree-conver"
+    const array = [
+  { no: '1', parentNo: ''},
+  { no: '2', parentNo: '1' },
+  { no: '3', parentNo: '1' },
+  { no: '4', parentNo: '2' }
+]
+    console.log(arrayToTree(array,{
+  idKey: 'no',
+  pidKey: 'parentNo',
+  childrenKey: 'nodes'
+}))
+</script>
 
 ## 1. 仅传入数组参数，使用默认的字段名称转换
 
 ```JavaScript
 const array = [
-  { id: '1', pid: '0' },
+  { id: '1', pid: ''},
   { id: '2', pid: '1' },
   { id: '3', pid: '1' },
   { id: '4', pid: '2' }
@@ -22,7 +37,7 @@ console.log(tree);
 [
   {
     "id": "1",
-    "pid": "0",
+    "pid": "",
     "children": [
       {
         "id": "2",
@@ -49,7 +64,7 @@ console.log(tree);
 
 ```JavaScript
 const array = [
-  { no: '1', parentNo: '0' },
+  { no: '1', parentNo: ''},
   { no: '2', parentNo: '1' },
   { no: '3', parentNo: '1' },
   { no: '4', parentNo: '2' }
@@ -71,7 +86,7 @@ console.log(tree);
 [
   {
     "no": "1",
-    "parentNo": "0",
+    "parentNo": "",
     "nodes": [
       {
         "no": "2",
@@ -98,7 +113,7 @@ console.log(tree);
 
 ```JavaScript
 const array = [
-  { uid: '1', pid: '0' },
+  { uid: '1', pid: '' },
   { uid: '2', pid: '1' },
   { uid: '3', pid: '1' },
   { uid: '4', pid: '2' }
@@ -118,7 +133,7 @@ console.log(tree);
 [
   {
     "uid": "1",
-    "pid": "0",
+    "pid": "",
     "children": [
       {
         "uid": "2",
@@ -140,4 +155,3 @@ console.log(tree);
   }
 ]
 ```
-

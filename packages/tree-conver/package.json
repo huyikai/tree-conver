@@ -20,15 +20,19 @@
   "license": "MIT",
   "author": "huyikai",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "rollup --config rollup.config.ts --configPlugin typescript"
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.1",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.16.3",
+    "rollup": "^3.21.5",
     "typescript": "^5.0.4"
   },
   "files": [
