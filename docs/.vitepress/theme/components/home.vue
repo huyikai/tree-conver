@@ -21,7 +21,7 @@ import VPButton from 'vitepress/dist/client/theme-default/components/VPButton.vu
         size="medium"
         theme="sponsor"
         text="Example"
-        href="/contents/Docs/1.Introduction.html"
+        href="/contents/Example/arrayToTree.html"
       >
       </VPButton>
       <VPButton
