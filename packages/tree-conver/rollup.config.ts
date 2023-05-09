@@ -2,20 +2,20 @@ import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 
 export default {
-  input: 'src/node/index.ts',
+  input: 'src/index.ts',
   output: [
     {
-      file: 'dist/index.cjs.js',
+      file: 'lib/index.cjs.js',
       format: 'cjs'
     },
     {
-      file: 'dist/index.esm.js',
+      file: 'lib/index.esm.js',
       format: 'esm',
       sourcemap: true
     },
     {
       name: 'treeConver',
-      file: 'dist/tree-conver.min.js',
+      file: 'lib/tree-conver.min.js',
       format: 'iife'
     }
   ],

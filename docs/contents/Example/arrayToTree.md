@@ -2,21 +2,6 @@
 
 以下是几种使用 arrayToTree 方法的示例
 
-<script>
-    import {arrayToTree,treeToArray} from "tree-conver"
-    const array = [
-  { no: '1', parentNo: ''},
-  { no: '2', parentNo: '1' },
-  { no: '3', parentNo: '1' },
-  { no: '4', parentNo: '2' }
-]
-    console.log(arrayToTree(array,{
-  idKey: 'no',
-  pidKey: 'parentNo',
-  childrenKey: 'nodes'
-}))
-</script>
-
 ## 1. 仅传入数组参数，使用默认的字段名称转换
 
 ```JavaScript

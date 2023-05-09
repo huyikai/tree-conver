@@ -1,6 +1,6 @@
 {
   "name": "tree-conver",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Tree data conversion tool",
   "keywords": [
     "tree",
@@ -17,11 +17,12 @@
     "type": "git",
     "url": "git+https://github.com/huyikai/tree-conver.git"
   },
+  "types": "lib/src/index.d.ts",
   "license": "MIT",
   "author": "huyikai",
   "type": "module",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
   "workspaces": [
     "packages/*"
   ],
