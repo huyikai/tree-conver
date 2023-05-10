@@ -1,6 +1,6 @@
 {
   "name": "tree-conver",
-  "version": "0.0.8",
+  "version": "0.0.91",
   "description": "Tree data conversion tool",
   "keywords": [
     "tree",
@@ -9,7 +9,7 @@
     "treeConer",
     "treeToArray"
   ],
-  "homepage": "https://github.com/huyikai/tree-conver#readme",
+  "homepage": "https://huyikai.github.io/tree-conver/",
   "bugs": {
     "url": "https://github.com/huyikai/tree-conver/issues"
   },
@@ -37,7 +37,7 @@
     "typescript": "^5.0.4"
   },
   "files": [
-    "dist"
+    "lib"
   ],
   "publishConfig": {
     "access": "public"

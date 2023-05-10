@@ -2,13 +2,7 @@
 
 Tree data conversion tool
 
-## Website
-
-[huyikai.github.io/tree-conver/](https://huyikai.github.io/tree-conver/)
-
-## Features
-
-- can convert tree data to flat array
+[简体中文](https://github.com/huyikai/tree-conver/README-zhCN.md)
 
 ## Usage
 
@@ -22,19 +16,145 @@ import treeToArray from "tree-conver"
 // or Import Deconstruct Export
 import { treeToArray, arrayToTree } from "tree-conver"
 
-// Usage
-const tree = [...]
-const array = [...]
-treeToArray(tree)
-arrayToTree(array)
+// Define flat node array
+// The root node pid should be null or '', and the data to be processed should have at least one item with a null pid
+const myArray = [
+  { uid: '1', name: 'Node 1', pid: null },
+  { uid: '2', name: 'Node 2', pid: '1' },
+  { uid: '3', name: 'Node 3', pid: '1' },
+  { uid: '4', name: 'Node 4', pid: '2' },
+  { uid: '5', name: 'Node 5', pid: '2' },
+  { uid: '6', name: 'Node 6', pid: '3' },
+];
+
+// Set options, can be empty, or set only the required items
+const a2tOptions = {
+  idKey: 'uid', // custom id field, default 'id'
+  pidKey: 'pid', // custom pid field, default 'pid'
+  childrenKey: 'children' // custom children field, default 'children'
+}
+
+// Call the arrayToTree method and pass in the set parameters to convert the flat node array to a tree structure.
+const myTree = arrayToTree(myArray, a2tOptions);
+
+/**================================================================*/
+
+// Define tree structure
+const myTree = [
+  {
+    id: '1',
+    name: 'Node 1',
+    list: [
+      {
+        id: '2',
+        name: 'Node 2',
+        list: [
+          {
+            id: '3',
+            name: 'Node 3'
+          }
+        ]
+      },
+      {
+        id: '4',
+        name: 'Node 4'
+      }
+    ]
+  }
+];
+
+// Set options, can be empty, or set only the required items
+const t2aOptions = {
+  childrenKey: 'list', // The key name of the child node. default 'children'
+  ignoreFields: [], // The list of field names to be ignored. The default value is an empty list.
+  addFields: [], // The list of field names to be added and the calculation method of their corresponding attribute values. The default is an empty list.
+  needParentId: true // Whether the child node needs the id of the parent node. Default is true.
+}
+
+// Call the treeToArray method and pass in the set parameters to convert the tree structure to an array
+const nodes = treeToArray(tree, t2aOptions);
 ```
 
+[View more usage example](https://huyikai.github.io/tree-conver/contents/Example/arrayToTree.html)
+
+## arrayToTree
+
+将扁平节点数组转化为树形结构的方法。
+
+该方法的实现思路是先将给定的节点数组转化为一个以节点id为key的映射，然后遍历每个节点，找到它的父节点并将它添加到父节点的children属性中。最后，从根节点开始构建整个树并返回树形结构数据。
+
+### 参数
+
+它接受两个参数：
+
+- **Array** : 扁平节点数组 
+
+- **Options** : 一个可选参数对象，用来配置转换方法的具体行为
+
+  | 参数        | 说明                           | 类型   | 默认值     |
+  | ----------- | ------------------------------ | ------ | ---------- |
+  | childrenKey | 自定义节点 children 字段的名称 | string | 'children' |
+  | idKey       | 自定义节点 id 字段的名称       | string | 'id'       |
+  | pidKey      | 自定义节点 pid 字段的名称      | string | 'pid'      |
 
 
-## License
+### 返回值
 
-[MIT](./license)
+返回一个树形结构的节点数组。
+
+### 复杂度
+
+- **时间复杂度**
+
+  该方法的时间复杂度为 O(n)，其中 n 为输入数组的长度。在方法中，遍历了输入数组并创建了节点 id 到节点的映射，这一步的时间复杂度为 O(n)。接下来，又遍历了一遍所有节点，将它们添加到它们的父节点的 children 数组中，这一步的时间复杂度同样为 O(n)。因此，总的时间复杂度为 O(n)。
+
+- **空间复杂度**
+
+  该方法的空间复杂度为 O(n)，其中 n 为 array 数组的长度。在方法中，通过遍历 array 数组来创建节点 id 到节点的映射，并在映射中存储所有节点，因此，空间复杂度为 O(n)。然后，对该映射中的所有节点进行一次遍历，将它们的子节点添加到 parentNode 的 children 属性中，也是 O(n) 的空间复杂度。综上所述，arrayToTree 方法的空间复杂度为 O(n)。
+
+## treeToArray
+
+将树形结构的数据转换为扁平化数组的方法。
+
+该方法的具体实现思路是基于广度优先遍历二叉树的形式进行的。对于每一个遍历到的节点，都会进行一系列处理，例如将该节点的所有属性存储到新的节点对象中、删除忽略的属性、以及计算并添加需要添加的属性等。经过这些处理后，该节点会被以新的形式保存到一个数组中，最终返回该数组中包含的所有节点信息（包括子孙节点）。
+
+### 参数
+
+它接受两个参数：
+
+- **Tree** : 包含所有节点的树形结构
+
+- **Options** : 一个可选参数对象，用来配置转换方法的具体行为
+
+  | 属性         | 描述                                         | 类型                                            | 默认值     |
+  | :----------- | -------------------------------------------- | ----------------------------------------------- | ---------- |
+  | addFields    | 需要添加的字段名及其对应属性值的计算方式列表 | [{ fieldName: string;callback: (item) => any }] | []         |
+  | childrenKey  | 子节点的键名                                 | string                                          | 'children' |
+  | ignoreFields | 需要忽略的字段名列表                         | string[]                                        | []         |
+  | needParentId | 是否需要在节点信息中添加该节点的父节点的id   | boolean                                         | true       |
+
+### 返回值
+
+返回一个包含所有节点信息的数组，这些节点包括它们自身的信息，以及它们子代节点的信息。
+
+### 复杂度
+
+- 时间复杂度
+
+  该方法的时间复杂度取决于树的深度和节点数。在最坏的情况下，如果树是平衡树且每个节点都有多个子节点，则时间复杂度为 O(nlogn)。在树的高度很小的情况下，即使每个节点都有多个子节点，时间复杂度仍然是 O(n)，其中 n 是节点数。该方法利用栈实现迭代，以减少内存使用和调用栈的嵌套。因此，该方法在大多数情况下能够高效地实现。
+
+- 空间复杂度
+
+  该方法的空间复杂度是 O(n)，其中 n 为树中节点的个数。因为方法的实现并没有使用递归，而是采用了迭代的方式，用栈实现了深度优先遍历。在栈中存储的节点数组的最大长度即为树的深度，因此空间复杂度为 O(n)。
+
+## Website
+
+[huyikai.github.io/tree-conver/](https://huyikai.github.io/tree-conver/)
 
 ## Repository
 
 https://github.com/huyikai/tree-conver.git
+
+## License
+
+[MIT](./license)
