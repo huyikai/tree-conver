@@ -13,7 +13,7 @@ export default async () => {
     themeConfig: {
       pages, // 所有页面
       siteTitle: 'Tree-Conver', //导航栏左侧名称
-      // logo: '/static/nav-logo.svg', //导航栏左侧头像
+      logo: '/static/logo.svg', //导航栏左侧头像
       lastUpdated: true, //最后更新时间
       outlineTitle: 'Catalog', //右侧 侧边栏标题
       // 导航栏

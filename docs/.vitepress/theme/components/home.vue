@@ -4,6 +4,11 @@ import VPButton from 'vitepress/dist/client/theme-default/components/VPButton.vu
 </script>
 <template>
   <div class="hero">
+    <img
+      class="logo"
+      src="/static/logo.svg"
+      alt="vitepress-custom"
+    />
     <div class="name">Tree-Conver</div>
     <div class="text">Tree data conversion tool</div>
 
@@ -39,10 +44,9 @@ import VPButton from 'vitepress/dist/client/theme-default/components/VPButton.vu
 <style lang="scss">
 .hero {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-flow: column nowrap;
-  padding: 100px 0 30px;
+  align-items: center;
+  padding-top: 30px;
 
   .logo {
     display: block;
