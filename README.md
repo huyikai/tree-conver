@@ -1,8 +1,17 @@
+<p align="center">
+  <a href="https://huyikai.github.io/tree-conver/" target="_blank" rel="noopener noreferrer">
+    <img width="180" src="https://huyikai.github.io/tree-conver/static/logo.svg" alt="tree-conver logo">
+  </a>
+</p>
+<p align="center">
+  <img src="https://badgen.net/badge/icon/typescript?icon=typescript&label" alt="typescript">
+</p>
+
 # Tree-Conver
 
 Tree data conversion tool
 
-[简体中文](./README-zhCN.md)
+English | [简体中文](./README-zhCN.md)
 
 ## Usage
 
