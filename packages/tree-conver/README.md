@@ -2,7 +2,7 @@
 
 Tree data conversion tool
 
-[简体中文](https://github.com/huyikai/tree-conver/README-zhCN.md)
+[简体中文](https://github.com/huyikai/tree-conver/blob/main/README-zhCN.md)
 
 ## Usage
 
@@ -79,73 +79,92 @@ const nodes = treeToArray(tree, t2aOptions);
 
 ## arrayToTree
 
-将扁平节点数组转化为树形结构的方法。
+A method that converts a flat node array to a tree structure.
 
-该方法的实现思路是先将给定的节点数组转化为一个以节点id为key的映射，然后遍历每个节点，找到它的父节点并将它添加到父节点的children属性中。最后，从根节点开始构建整个树并返回树形结构数据。
-
-### 参数
-
-它接受两个参数：
-
-- **Array** : 扁平节点数组 
-
-- **Options** : 一个可选参数对象，用来配置转换方法的具体行为
-
-  | 参数        | 说明                           | 类型   | 默认值     |
-  | ----------- | ------------------------------ | ------ | ---------- |
-  | childrenKey | 自定义节点 children 字段的名称 | string | 'children' |
-  | idKey       | 自定义节点 id 字段的名称       | string | 'id'       |
-  | pidKey      | 自定义节点 pid 字段的名称      | string | 'pid'      |
+The implementation of this method is to first convert the given node array into a mapping with the node id as the key, and then traverse each node, find its parent node, and add it to the parent node's children property. Finally, the entire tree is constructed starting from the root node and the tree structure data is returned.
 
 
-### 返回值
 
-返回一个树形结构的节点数组。
+### Parameters
 
-### 复杂度
+It takes two parameters:
 
-- **时间复杂度**
 
-  该方法的时间复杂度为 O(n)，其中 n 为输入数组的长度。在方法中，遍历了输入数组并创建了节点 id 到节点的映射，这一步的时间复杂度为 O(n)。接下来，又遍历了一遍所有节点，将它们添加到它们的父节点的 children 数组中，这一步的时间复杂度同样为 O(n)。因此，总的时间复杂度为 O(n)。
 
-- **空间复杂度**
+- **Array** : An array of flat nodes
 
-  该方法的空间复杂度为 O(n)，其中 n 为 array 数组的长度。在方法中，通过遍历 array 数组来创建节点 id 到节点的映射，并在映射中存储所有节点，因此，空间复杂度为 O(n)。然后，对该映射中的所有节点进行一次遍历，将它们的子节点添加到 parentNode 的 children 属性中，也是 O(n) 的空间复杂度。综上所述，arrayToTree 方法的空间复杂度为 O(n)。
+- **Options** : An optional object that configures the behavior of the conversion method
+
+  | Property    | Description                                  | Type   | Default    |
+  | ----------- | -------------------------------------------- | ------ | ---------- |
+  | childrenKey | The name of the children field                | string | 'children' |
+  | idKey       | The name of the id field                      | string | 'id'       |
+  | pidKey      | The name of the parent id field                | string | 'pid'      |
+
+
+
+
+### Return value
+
+Returns an array of nodes in a tree structure.
+
+
+
+### Complexity
+
+- **Time Complexity**
+
+  The time complexity of this method is O(n), where n is the length of the input array. In the method, the input array is traversed and a mapping of node id to node is created, which takes O(n) time. Then, all nodes are traversed again and added to their parent node's children array, which also takes O(n) time. Therefore, the total time complexity is O(n).
+
+- **Space Complexity**
+
+  The space complexity of this method is O(n), where n is the length of the array. In the method, a mapping of node id to node is created by traversing the array, and all nodes are stored in the mapping, so the space complexity is O(n). Then, all nodes in the mapping are traversed once again, and their child nodes are added to the parentNode's children property, which also has a space complexity of O(n). Therefore, the space complexity of the arrayToTree method is O(n).
+
 
 ## treeToArray
 
-将树形结构的数据转换为扁平化数组的方法。
+A method that converts tree-structured data to a flattened array.
 
-该方法的具体实现思路是基于广度优先遍历二叉树的形式进行的。对于每一个遍历到的节点，都会进行一系列处理，例如将该节点的所有属性存储到新的节点对象中、删除忽略的属性、以及计算并添加需要添加的属性等。经过这些处理后，该节点会被以新的形式保存到一个数组中，最终返回该数组中包含的所有节点信息（包括子孙节点）。
+The implementation of this method is based on breadth-first traversal of a binary tree. For each node traversed, a series of operations are performed, such as storing all of the node's properties in a new node object, deleting ignored properties, and calculating and adding required properties. After these operations, the node is saved in a new form in an array, and all node information (including descendants) contained in the array is returned.
 
-### 参数
 
-它接受两个参数：
 
-- **Tree** : 包含所有节点的树形结构
+### Parameters
 
-- **Options** : 一个可选参数对象，用来配置转换方法的具体行为
+It takes two parameters:
 
-  | 属性         | 描述                                         | 类型                                            | 默认值     |
-  | :----------- | -------------------------------------------- | ----------------------------------------------- | ---------- |
-  | addFields    | 需要添加的字段名及其对应属性值的计算方式列表 | [{ fieldName: string;callback: (item) => any }] | []         |
-  | childrenKey  | 子节点的键名                                 | string                                          | 'children' |
-  | ignoreFields | 需要忽略的字段名列表                         | string[]                                        | []         |
-  | needParentId | 是否需要在节点信息中添加该节点的父节点的id   | boolean                                         | true       |
+- **Tree** : A tree structure containing all nodes
 
-### 返回值
+- **Options** : An optional object that configures the behavior of the conversion method
 
-返回一个包含所有节点信息的数组，这些节点包括它们自身的信息，以及它们子代节点的信息。
+  | Property    | Description                                  | Type   | Default    |
+  | ----------- | -------------------------------------------- | ------ | ---------- |
+  | childrenKey | The name of the children field                | string | 'children' |
+  | idKey       | The name of the id field                      | string | 'id'       |
+  | pidKey      | The name of the parent id field                | string | 'pid'      |
+  | ignoreFields | The list of field names to be ignored. The default value is an empty list. | string[] | [] |
+  | addFields | The list of field names to be added and the calculation method of their corresponding attribute values. The default is an empty list. | [{ fieldName: string;callback: (item) => any }] | [] |
+  | needParentId | Whether the child node needs the id of the parent node. Default is true. | boolean | true |
 
-### 复杂度
 
-- 时间复杂度
 
-  该方法的时间复杂度取决于树的深度和节点数。在最坏的情况下，如果树是平衡树且每个节点都有多个子节点，则时间复杂度为 O(nlogn)。在树的高度很小的情况下，即使每个节点都有多个子节点，时间复杂度仍然是 O(n)，其中 n 是节点数。该方法利用栈实现迭代，以减少内存使用和调用栈的嵌套。因此，该方法在大多数情况下能够高效地实现。
 
-- 空间复杂度
+### Return value
 
-  该方法的空间复杂度是 O(n)，其中 n 为树中节点的个数。因为方法的实现并没有使用递归，而是采用了迭代的方式，用栈实现了深度优先遍历。在栈中存储的节点数组的最大长度即为树的深度，因此空间复杂度为 O(n)。
+Returns an array containing information for all nodes, including their own information and the information of their descendant nodes.
+
+
+
+### Complexity
+
+- Time Complexity
+
+  The time complexity of this method depends on the depth and number of nodes in the tree. In the worst case, if the tree is a balanced tree and each node has multiple child nodes, the time complexity is O(nlogn). In the case where the height of the tree is small, even if each node has multiple child nodes, the time complexity is still O(n), where n is the number of nodes. The method uses a stack to implement iteration to reduce memory usage and nested call stacks. Therefore, the method can be efficiently implemented in most cases.
+
+- Space Complexity
+
+  The space complexity of this method is O(n), where n is the number of nodes in the tree. Because the implementation of the method does not use recursion, but uses iteration to implement depth-first traversal with a stack. The maximum length of the node array stored in the stack is the depth of the tree, so the space complexity is O(n).
+
 
 ## Website
 
