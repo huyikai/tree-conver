@@ -1,8 +1,8 @@
 # treeToArray
 
-以下是几种使用treeToArray方法的示例
+Here are some examples of using the treeToArray method.
 
-## 1. 只使用tree入参，不提供options参数
+## 1. Using only the tree parameter, without providing the options parameter
 
 ```javascript
 const tree = {
@@ -26,13 +26,13 @@ const tree = {
   ]
 };
 
-// 调用treeToArray方法，只提供tree参数
+// Call the treeToArray method, only providing the tree parameter
 const nodes = treeToArray(tree);
 
 console.log(nodes);
 ```
 
-### 输出结果
+### Output
 
 ```json
 [
@@ -43,7 +43,7 @@ console.log(nodes);
 ]
 ```
 
-## 2. 提供一个或多个options参数
+## 2. Providing one or more options parameters
 
 ```JavaScript
 const tree = {
@@ -67,26 +67,26 @@ const tree = {
   ]
 };
 
-// 为options参数赋值
+// Assign values to the options parameter
 const options = {
-  childrenKey: 'kids', // 将默认的'children'键名称替换为'kids'
-  ignoreFields: ['name'], // 忽略'name'字段
+  childrenKey: 'kids', // Replace the default 'children' key name with 'kids'
+  ignoreFields: ['name'], // Ignore the 'name' field
   addFields: [
     {
-      fieldName: 'hasChildren', // 新增一个'field'属性，值为布尔值
+      fieldName: 'hasChildren', // Add a new 'field' property with a boolean value
       callback: (node: Node) => Boolean(node['children'])
     }
   ],
-  needParentId: false // 禁止为子节点添加parentId属性
+  needParentId: false // Prevent adding parentId property to child nodes
 };
 
-// 调用treeToArray方法，提供tree和options参数
+// Call the treeToArray method, providing both tree and options parameters
 const nodes = treeToArray(tree, options);
 
 console.log(nodes);
 ```
 
-### 输出结果
+### Output
 
 ```json
 [
@@ -97,7 +97,7 @@ console.log(nodes);
 ]
 ```
 
-## 3. 使用自定义的遍历函数计算新的属性值：
+## 3. Using a custom traversal function to calculate new property values:
 
 ```JavaScript
 const tree = {
@@ -121,7 +121,7 @@ const tree = {
   ]
 };
 
-// 自定义一个遍历函数，用于计算节点的'depth'属性
+// Define a custom traversal function to calculate the 'depth' property of each node
 const calculateDepth = (node: Node) => {
   let depth = 0;
   let parent = node;
@@ -132,23 +132,23 @@ const calculateDepth = (node: Node) => {
   return depth;
 };
 
-// 为options参数赋值
+// Assign values to the options parameter
 const options = {
   addFields: [
     {
-      fieldName: 'depth', // 新增一个'depth'属性，值为每个节点的深度
+      fieldName: 'depth', // Add a new 'depth' property with the depth of each node
       callback: calculateDepth
     }
   ]
 };
 
-// 调用treeToArray方法，提供tree和options参数
+// Call the treeToArray method, providing both tree and options parameters
 const nodes = treeToArray(tree, options);
 
 console.log(nodes);
 ```
 
-### 输出结果
+### Output
 
 ```json
 [
@@ -158,4 +158,6 @@ console.log(nodes);
   { id: '4', name: 'grandchild', parentId: '3', depth: 3 }
 ]
 ```
+
+
 

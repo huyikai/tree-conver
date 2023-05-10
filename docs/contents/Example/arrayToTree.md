@@ -1,8 +1,8 @@
 # arrayToTree
 
-以下是几种使用 arrayToTree 方法的示例
+Here are some examples of using the arrayToTree method.
 
-## 1. 仅传入数组参数，使用默认的字段名称转换
+## 1. Only pass in the array parameter and use the default field name conversion.
 
 ```JavaScript
 const array = [
@@ -16,7 +16,7 @@ const tree = arrayToTree(array);
 console.log(tree);
 ```
 
-### 输出结果
+### Output
 
 ```json
 [
@@ -45,7 +45,7 @@ console.log(tree);
 ]
 ```
 
-## 2. 自定义字段名称
+## 2. Customize field names.
 
 ```JavaScript
 const array = [
@@ -65,7 +65,7 @@ const tree = arrayToTree(array, options);
 console.log(tree);
 ```
 
-### 输出结果
+### Output
 
 ```json
 [
@@ -94,7 +94,7 @@ console.log(tree);
 ]
 ```
 
-## 3. 仅使用自定义的 id 字段名称
+## 3. Only use a custom id field name.
 
 ```JavaScript
 const array = [
@@ -112,7 +112,7 @@ const tree = arrayToTree(array, options);
 console.log(tree);
 ```
 
-### 输出结果
+### Output
 
 ```json
 [
@@ -140,3 +140,5 @@ console.log(tree);
   }
 ]
 ```
+
+
