@@ -9,7 +9,13 @@ interface Options {
   childrenKey?: string; // 自定义 children 字段的名称
 }
 
-export const arrayToTree = (array: Array<Node>, options: Options = {}) => {
+export const arrayToTree = (
+  array: Array<Node | undefined>,
+  options: Options = {}
+) => {
+  if (!Array.isArray(array)) {
+    throw new Error('The first argument must be an array.');
+  }
   // 解构 options 对象来获取自定义字段名称或默认值
   const { idKey = 'id', pidKey = 'pid', childrenKey = 'children' } = options;
   // 创建节点 id 到节点的映射
