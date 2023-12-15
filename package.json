@@ -34,9 +34,7 @@
     ]
   },
   "devDependencies": {
-    "@vitepress-custom/vitepress-plugin-fetch-docs": "^0.0.5",
-    "@vitepress-custom/vitepress-plugin-nav": "^0.0.7",
-    "@vitepress-custom/vitepress-plugin-sidebar": "^0.0.8",
+    "@huyikai/vitepress-helper": "^0.0.9",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint": "^8.40.0",
