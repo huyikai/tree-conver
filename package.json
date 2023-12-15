@@ -48,7 +48,7 @@
     "stylelint": "^15.6.1",
     "stylelint-config-standard": "^33.0.0",
     "stylelint-order": "^6.0.3",
-    "vitepress": "^1.0.0-alpha.75",
-    "vue": "^3.2.45"
+    "vitepress": "^1.0.0-rc.31",
+    "vue": "^3.3.9"
   }
 }
