@@ -23,7 +23,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "lint:style": "stylelint \"./docs/**/*.{css,scss,vue,html}\" --fix",
     "prepare": "husky install",
-    "serve": "vitepress serve docs"
+    "serve": "vitepress serve docs",
+    "commit": "git-cz"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts}": [
@@ -49,6 +50,7 @@
     "stylelint-config-standard": "^33.0.0",
     "stylelint-order": "^6.0.3",
     "vitepress": "^1.0.0-rc.31",
-    "vue": "^3.3.9"
+    "vue": "^3.3.9",
+    "git-cz": "^4.9.0"
   }
 }
