@@ -35,7 +35,7 @@
     ]
   },
   "devDependencies": {
-    "@huyikai/vitepress-helper": "^0.0.9",
+    "@huyikai/vitepress-helper": "latest",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint": "^8.40.0",
