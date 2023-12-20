@@ -17,27 +17,32 @@
     "type": "git",
     "url": "git+https://github.com/huyikai/tree-conver.git"
   },
-  "types": "lib/types/index.d.ts",
   "license": "MIT",
   "author": "huyikai",
   "type": "module",
   "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build": "rollup --config rollup.config.ts --configPlugin typescript"
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "release": "release-it"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.1",
     "@rollup/plugin-terser": "^0.4.1",
     "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.16.3",
     "rollup": "^3.21.5",
     "typescript": "^5.0.4"
   },
-  "files": [
-    "lib"
-  ],
+  "engines": {
+    "node": ">=16"
+  },
   "publishConfig": {
     "access": "public"
   }

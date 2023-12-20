@@ -24,7 +24,8 @@
     "lint:style": "stylelint \"./docs/**/*.{css,scss,vue,html}\" --fix",
     "prepare": "husky install",
     "serve": "vitepress serve docs",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "release": "npm run release --workspaces"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts}": [
@@ -36,10 +37,12 @@
   },
   "devDependencies": {
     "@huyikai/vitepress-helper": "latest",
+    "@release-it/bumper": "^6.0.1",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint": "^8.40.0",
     "eslint-plugin-vue": "^9.11.0",
+    "git-cz": "^4.9.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "postcss-html": "^1.5.0",
@@ -50,7 +53,6 @@
     "stylelint-config-standard": "^33.0.0",
     "stylelint-order": "^6.0.3",
     "vitepress": "^1.0.0-rc.31",
-    "vue": "^3.3.9",
-    "git-cz": "^4.9.0"
+    "vue": "^3.3.9"
   }
 }

@@ -36,10 +36,10 @@ console.log(nodes);
 
 ```json
 [
-  { id: '1', name: 'root' },
-  { id: '2', name: 'child1', parentId: '1' },
-  { id: '3', name: 'child2', parentId: '1' },
-  { id: '4', name: 'grandchild', parentId: '3' }
+  { "id": "1", "name": "root" },
+  { "id": "2", "name": "child1", "parentId": "1" },
+  { "id": "3", "name": "child2", "parentId": "1" },
+  { "id": "4", "name": "grandchild", "parentId": "3" }
 ]
 ```
 
@@ -90,10 +90,10 @@ console.log(nodes);
 
 ```json
 [
-  { id: '1', kids: [] },
-  { id: '2', kids: [], hasChildren: false },
-  { id: '3', kids: [], hasChildren: true },
-  { id: '4', kids: [], hasChildren: false }
+  { "id": "1", "kids": [] },
+  { "id": "2", "kids": [], "hasChildren": false },
+  { "id": "3", "kids": [], "hasChildren": true },
+  { "id": "4", "kids": [], "hasChildren": false }
 ]
 ```
 
@@ -152,12 +152,9 @@ console.log(nodes);
 
 ```json
 [
-  { id: '1', name: 'root', depth: 1 },
-  { id: '2', name: 'child1', parentId: '1', depth: 2 },
-  { id: '3', name: 'child2', parentId: '1', depth: 2 },
-  { id: '4', name: 'grandchild', parentId: '3', depth: 3 }
+  { "id": "1", "name": "root", "depth": 1 },
+  { "id": "2", "name": "child1", "parentId": "1", "depth": 2 },
+  { "id": "3", "name": "child2", "parentId": "1", "depth": 2 },
+  { "id": "4", "name": "grandchild", "parentId": "3", "depth": 3 }
 ]
 ```
-
-
-
