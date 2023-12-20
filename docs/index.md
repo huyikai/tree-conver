@@ -1,14 +1,17 @@
 ---
 layout: custom
 aside: false
+outline: false
+lastUpdated: false
 ---
 
-## Usage
+# Usage
 
 ```shell
 # import dependency
 npm i tree-conver
 ```
+
 ```javascript
 // Import default export
 import treeToArray from "tree-conver"

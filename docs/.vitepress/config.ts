@@ -1,6 +1,5 @@
 import vitepressHelper from '@huyikai/vitepress-helper';
 export default async () => {
-  // let pages = await docsData();
   const instance: any = await vitepressHelper({
     directory: 'docs',
     collapsible: true
