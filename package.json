@@ -19,13 +19,13 @@
   ],
   "scripts": {
     "build": "vitepress build docs",
+    "commit": "git-cz",
     "dev": "vitepress dev docs",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "lint:style": "stylelint \"./docs/**/*.{css,scss,vue,html}\" --fix",
     "prepare": "husky install",
-    "serve": "vitepress serve docs",
-    "commit": "git-cz",
-    "release": "npm run release --workspaces"
+    "release": "npm run release --workspaces",
+    "serve": "vitepress serve docs"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts}": [
