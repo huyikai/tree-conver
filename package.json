@@ -52,6 +52,8 @@
     "stylelint": "^15.6.1",
     "stylelint-config-standard": "^33.0.0",
     "stylelint-order": "^6.0.3",
+    "unplugin-auto-import": "^0.17.2",
+    "unplugin-vue-components": "^0.26.0",
     "vitepress": "^1.0.0-rc.31",
     "vue": "^3.3.9"
   }
