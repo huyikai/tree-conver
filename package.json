@@ -2,10 +2,11 @@
   "name": "tree-conver",
   "version": "0.0.0",
   "private": false,
-  "description": "vitepress-custom",
+  "description": "tree-conver",
   "keywords": [
-    "vitepress-custom",
-    "vitepress"
+    "tree-conver",
+    "tree",
+    "treeTransformer"
   ],
   "license": "MIT",
   "author": "huyikai",

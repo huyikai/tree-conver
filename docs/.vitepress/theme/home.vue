@@ -7,7 +7,7 @@ import VPButton from 'vitepress/dist/client/theme-default/components/VPButton.vu
     <img
       class="logo"
       src="/static/logo.svg"
-      alt="vitepress-custom"
+      alt="tree-conver"
     />
     <div class="name">Tree-Conver</div>
     <div class="text">Tree data conversion tool</div>
