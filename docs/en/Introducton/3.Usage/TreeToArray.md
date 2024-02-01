@@ -16,6 +16,7 @@ It takes two parameters:
   | childrenKey  | Key name for child nodes                                                                   | string                                          | 'children' |
   | ignoreFields | List of field names to be ignored                                                          | string[]                                        | []         |
   | needParentId | Whether to add the parent node ID to the node information                                  | boolean                                         | true       |
+  | primaryKey   | Primary key name for node                                                                  | boolean                                         | true       |
 
 ## Example
 

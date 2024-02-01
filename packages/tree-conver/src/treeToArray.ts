@@ -6,6 +6,8 @@ interface Node {
 
 // 入参类型
 interface TreeToArrayOptions {
+  // 主键名称，默认为'id'
+  primaryKey?: string;
   // 子节点的键名称，默认为'children'
   childrenKey?: string;
   // 需要忽略的字段名列表，默认为空列表
@@ -22,6 +24,7 @@ export const treeToArray = (
   options: TreeToArrayOptions = {}
 ): Array<Node> => {
   const {
+    primaryKey = 'id',
     // 子节点的键名称
     childrenKey = 'children',
     // 要忽略的字段名列表
@@ -76,7 +79,7 @@ export const treeToArray = (
         stack.push({
           node: children[i],
           children: children[i][childrenKey] || [],
-          parentId: node?.id || ''
+          parentId: node?.[primaryKey] || ''
         });
       }
     }

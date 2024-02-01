@@ -16,27 +16,28 @@
   | childrenKey  | 子节点的键名                                     | string                                          | 'children' |
   | ignoreFields | 要忽略的字段名称列表                             | string[]                                        | []         |
   | needParentId | 是否添加节点信息的父节点 ID                      | boolean                                         | true       |
+  | primaryKey   | 节点的主键名                                   | boolean                                         | true       |
 
 ## 示例
 
 ```javascript
 const treeArray = [
   {
-    id: '1',
+    key: '1',
     name: 'Node 1',
     list: [
       {
-        id: '2',
+        key: '2',
         name: 'Node 2',
         list: [
           {
-            id: '3',
+            key: '3',
             name: 'Node 3'
           }
         ]
       },
       {
-        id: '4',
+        key: '4',
         name: 'Node 4'
       }
     ]
