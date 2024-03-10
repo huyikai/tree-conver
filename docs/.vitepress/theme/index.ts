@@ -1,9 +1,13 @@
+import './styles/styles.css';
+
+import theme, { VPButton } from '@huyikai/vitepress-helper/theme/index';
+
 import Home from './home.vue';
-import theme from '@huyikai/vitepress-helper/theme/index';
 
 export default {
   extends: theme,
-  enhanceApp: ({ app }: any) => {
+  enhanceApp: ({ app }) => {
     app.component('Home', Home);
+    app.component('VPButton', VPButton);
   }
 };
