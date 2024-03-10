@@ -7,7 +7,7 @@ import VPButton from 'vitepress/dist/client/theme-default/components/VPButton.vu
     <img
       class="logo"
       src="/static/logo.svg"
-      alt="vitepress-custom"
+      alt="tree-conver"
     />
     <div class="name">Tree-Conver</div>
     <div class="text">Tree data conversion tool</div>
@@ -18,15 +18,15 @@ import VPButton from 'vitepress/dist/client/theme-default/components/VPButton.vu
         size="medium"
         theme="brand"
         text="Docs"
-        href="/Docs/1.Introduction.html"
+        href="/Introducton/1.What%20is%20TreeConver.html"
       >
       </VPButton>
       <VPButton
         tag="a"
         size="medium"
         theme="sponsor"
-        text="Example"
-        href="/Example/arrayToTree.html"
+        text="Playground"
+        href="/Playground/ArrayToTree.html"
       >
       </VPButton>
       <VPButton

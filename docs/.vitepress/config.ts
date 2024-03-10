@@ -1,4 +1,7 @@
-import vitepressHelper from '@huyikai/vitepress-helper';
+import vitepressHelper, { config } from '@huyikai/vitepress-helper';
+
+import { defineConfigWithTheme } from 'vitepress';
+
 const vitepressHelperConfig = {
   directory: 'docs',
   collapsible: true
@@ -15,9 +18,11 @@ const vitepressConfig = {
     logo: '/static/logo.svg', //导航栏左侧头像
     lastUpdated: true, //最后更新时间
     outlineTitle: 'Catalog', //右侧 侧边栏标题
+
     search: {
       provider: 'local' // 离线搜索
     },
+
     // 社交链接
     socialLinks: [
       { icon: 'github', link: 'https://github.com/huyikai/tree-conver.git' }
@@ -32,12 +37,26 @@ const vitepressConfig = {
       prev: 'Pervious',
       next: 'Next'
     }
+  },
+  locales: {
+    root: {
+      label: '简体中文',
+      lang: 'zh'
+    },
+
+    en: {
+      label: 'English',
+      lang: 'en'
+    }
   }
 };
 export default async () => {
-  const instance: any = await vitepressHelper({
+  const vitepressHelperInstance: any = await vitepressHelper({
     ...vitepressHelperConfig,
     ...vitepressConfig
   });
-  return instance;
+  return defineConfigWithTheme({
+    extends: config,
+    ...vitepressHelperInstance
+  });
 };
