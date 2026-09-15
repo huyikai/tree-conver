@@ -14,5 +14,10 @@
     // 类型检查入口：仅源码（测试由 vitest 自行转译，不参与 build）
     "types": ["node"]
   },
-  "exclude": ["**/node_modules/**", "**/lib/**", "**.config.ts"]
+  "exclude": [
+    "**/node_modules/**",
+    "**/lib/**",
+    "**.config.ts",
+    "src/__tests__/**"
+  ]
 }
