@@ -1,3 +1,22 @@
+
+
+# [0.1.0](https://github.com/huyikai/tree-conver/compare/0.0.96...0.1.0) (2026-09-15)
+
+
+### Bug Fixes
+
+* 🎸 exclude test declarations from build output ([78a996a](https://github.com/huyikai/tree-conver/commit/78a996a73ff04b4bc7d24ebad53b31487bf5969a))
+* 🎸 harden tree conversions, add test suite & CI ([5331fac](https://github.com/huyikai/tree-conver/commit/5331fac7b4b150b9618e2f1e840d85547efa7a5c))
+* 🎸 restore root "type": "module" for VitePress config loading ([1128411](https://github.com/huyikai/tree-conver/commit/112841113c4d00ec2f3f5711bcac4a2347eedebc))
+* 🎸 satisfy CI lint & type-check ([90f5d38](https://github.com/huyikai/tree-conver/commit/90f5d389a87b820f795af1faaae808f39b6d8eb0))
+* 🎸 sync lockfile with optional rollup platform packages ([a9a58f3](https://github.com/huyikai/tree-conver/commit/a9a58f3a8566d16c271fb343afa0db89c6b0f5aa))
+* 🎸 track package-lock.json so CI npm ci works ([d6d118e](https://github.com/huyikai/tree-conver/commit/d6d118eb3736f5cf8ff62e1c2159b81ce37f37fe))
+
+
+### Features
+
+* 🎸 add primaryKey ([f7ef198](https://github.com/huyikai/tree-conver/commit/f7ef19824441b52fc68dd4db71e66155dc911b31))
+
 # Changelog
 
 <!--
