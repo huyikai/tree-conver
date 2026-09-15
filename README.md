@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://huyikai.github.io/tree-conver/" target="_blank" rel="noopener noreferrer">
-    <img width="180" src="https://huyikai.github.io/tree-conver/static/logo.svg" alt="tree-conver logo">
+    <img width="180" src="docs/public/static/logo.svg" alt="tree-conver logo">
   </a>
 </p>
 
@@ -73,6 +73,7 @@ const myTree = [
 
 // Set options, can be empty, or set only the required items
 const t2aOptions = {
+  idKey: 'id', // The key name of the node id. default 'id'
   childrenKey: 'list', // The key name of the child node. default 'children'
   ignoreFields: [], // The list of field names to be ignored. The default value is an empty list.
   addFields: [], // The list of field names to be added and the calculation method of their corresponding attribute values. The default is an empty list.
@@ -99,11 +100,40 @@ It takes two parameters:
 
 - **Options** : An optional object that configures the behavior of the conversion method
 
-  | Property    | Description                     | Type   | Default    |
-  | ----------- | ------------------------------- | ------ | ---------- |
-  | childrenKey | The name of the children field  | string | 'children' |
-  | idKey       | The name of the id field        | string | 'id'       |
-  | pidKey      | The name of the parent id field | string | 'pid'      |
+  | Property    | Description                                                              | Type                            | Default    |
+  | ----------- | ------------------------------------------------------------------------ | ------------------------------- | ---------- |
+  | childrenKey | The name of the children field                                           | string                          | 'children' |
+  | idKey       | The name of the id field                                                 | string                          | 'id'       |
+  | pidKey      | The name of the parent id field                                          | string                          | 'pid'      |
+  | onDuplicate | Called with the list of duplicate ids (later occurrences are discarded)  | `(ids: string[]) => void`       | undefined  |
+  | onOrphan    | Called with the list of dropped nodes (missing id or unknown parent pid) | `(nodes: ArrayNode[]) => void`  | undefined  |
+
+### Discarded-node behavior
+
+`arrayToTree` is **deterministic and pure by default** — it does NOT log to `console`. To inspect discarded nodes, pass `onDuplicate` and/or `onOrphan`:
+
+```js
+import { arrayToTree } from 'tree-conver';
+
+const tree = arrayToTree(input, {
+  onDuplicate: (ids) => console.warn('duplicate ids:', ids),
+  onOrphan:    (nodes) => console.warn('orphans:', nodes)
+});
+```
+
+A node is discarded when:
+
+- it is `null` / `undefined` / not an object;
+- its `idKey` field is missing, `null`, or an empty string;
+- its `id` already appeared earlier in the array (the first occurrence wins);
+- its `pidKey` value does not match any earlier node's `id`;
+- it is part of a cyclic parent chain (e.g. `A→B→A` or `A→A`) — the whole cycle is discarded and reported via `onOrphan`.
+
+`arrayToTree` will throw if any two of `idKey`, `pidKey`, `childrenKey` resolve to the same property — a misconfiguration that would otherwise silently corrupt data.
+
+In the result, both `id` and `pid` are normalized to **string** when you use the default key names (`idKey='id'`, `pidKey='pid'`), so `node.id === node.pid` comparisons are always safe. When custom keys are used, the nodes are returned as-is (no synthetic `id`/`pid` fields are injected). Pre-existing `children` fields on input nodes are ignored — the tree is reconstructed purely from `pid` relations.
+
+> **Note**: the `onOrphan` callback receives references to the original input objects — avoid mutating them in place.
 
 ### Return value
 
@@ -135,9 +165,8 @@ It takes two parameters:
 
   | Property     | Description                                                                                                                           | Type                                            | Default    |
   | ------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ---------- |
-  | childrenKey  | The name of the children field                                                                                                        | string                                          | 'children' |
   | idKey        | The name of the id field                                                                                                              | string                                          | 'id'       |
-  | pidKey       | The name of the parent id field                                                                                                       | string                                          | 'pid'      |
+  | childrenKey  | The name of the children field                                                                                                        | string                                          | 'children' |
   | ignoreFields | The list of field names to be ignored. The default value is an empty list.                                                            | string[]                                        | []         |
   | addFields    | The list of field names to be added and the calculation method of their corresponding attribute values. The default is an empty list. | [{ fieldName: string;callback: (item) => any }] | []         |
   | needParentId | Whether the child node needs the id of the parent node. Default is true.                                                              | boolean                                         | true       |
@@ -145,6 +174,8 @@ It takes two parameters:
 ### Return value
 
 Returns an array containing information for all nodes, including their own information and the information of their descendant nodes.
+
+> **Note**: When a parent node is missing the `idKey` field, its descendants will receive `parentId === null`, identical to root nodes. Callers cannot distinguish "true root" from "parent without id" — please backfill ids before calling if this matters.
 
 ### Complexity
 

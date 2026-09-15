@@ -1,89 +1,109 @@
-// 节点类型 Node Type
+import { isEmptyValue } from './utils';
+
+/**
+ * 树节点——允许业务方携带任意附加字段（用索引签名表达）。
+ */
 interface Node {
+  children?: Node[];
   [key: string]: any;
-  children?: Array<Node>;
 }
 
-// 入参类型
-interface TreeToArrayOptions {
-  // 主键名称，默认为'id'
-  primaryKey?: string;
-  // 子节点的键名称，默认为'children'
+interface TreeToArrayOptions {  /** 主键字段名，默认 'id' */
+  idKey?: string;
+  /** 子节点字段名，默认 'children' */
   childrenKey?: string;
-  // 需要忽略的字段名列表，默认为空列表
-  ignoreFields?: Array<string>;
-  // 需要添加的字段名及其对应属性值的计算方式列表，默认为空列表
+  /** 需要忽略的字段名列表 */
+  ignoreFields?: string[];
+  /** 需要动态添加的字段及其计算方法 */
   addFields?: Array<{ fieldName: string; callback: (item: Node) => any }>;
-  // 子节点是否需要父节点的id，默认为true
+  /** 是否在每个节点上附带 parentId，默认 true */
   needParentId?: boolean;
 }
 
-// 根据树状结构以数组形式返回所有节点（包括子孙节点）
+/**
+ * 将树形结构扁平化为节点数组，使用栈迭代避免深递归爆栈。
+ *
+ * 注意：当父节点缺失 `idKey` 时，其子节点的 `parentId` 与根节点一样为 `null`，
+ * 调用方无法区分这两种情况。如业务有此需求，请在传入前补齐 id。
+ *
+ * @param tree 树根节点数组
+ * @param options 配置项
+ * @returns 扁平化后的节点数组
+ */
 export const treeToArray = (
   tree: Array<Node>,
   options: TreeToArrayOptions = {}
 ): Array<Node> => {
+  if (!Array.isArray(tree)) {
+    throw new Error('The first argument must be an array.');
+  }
   const {
-    primaryKey = 'id',
-    // 子节点的键名称
+    idKey = 'id',
     childrenKey = 'children',
-    // 要忽略的字段名列表
     ignoreFields = [],
-    // 需要添加的字段名及其对应属性值的计算方式列表
     addFields = [],
-    // 子节点是否需要父节点的id，默认为true
     needParentId = true
   } = options;
-  const nodes: Array<Node> = [];
-  // stack用于迭代树结构中的子节点和子孙子节点
+
+  // 配置自检：相同的 key 在树遍历中含义不同，重叠会导致数据错乱
+  if (idKey === childrenKey) {
+    throw new Error(
+      `[treeToArray] idKey and childrenKey must be distinct (got ${JSON.stringify({ idKey, childrenKey })})`
+    );
+  }
+
+  const nodes: Node[] = [];
+  // stack 用于深度优先遍历，根节点的 parentId 为 null
   const stack: Array<{
-    // 正在处理的节点，包括该节点的信息、父节点的id、以及该节点的所有子节点
     node: Node | null;
-    children: Array<Node>;
+    children: Node[];
     parentId: string | null;
-  }> = [];
-  // 将整个树的所有节点压入栈，其中root节点的parentId为空
-  stack.push({
-    node: null,
-    children: tree,
-    parentId: null
-  });
+  }> = [{ node: null, children: tree, parentId: null }];
+
   while (stack.length) {
     const { node, children, parentId } = stack.pop()!;
     if (node) {
-      // 存储该节点的所有属性到newNode中，除去childrenKey所指定的子节点信息
-      const { [childrenKey]: subChildren, ...rest } = node;
-      const newNode = { ...rest };
+      // 重建对象而非 { ...node } + delete：
+      // 避免 V8 将对象降级为 dictionary mode 影响性能。
+      // 仅在 needParentId 时跳过用户自带的 parentId，
+      // 避免即将写入的合成值与原值冲突；needParentId=false 时保留原字段。
+      const skipKeys = needParentId
+        ? [childrenKey, 'parentId']
+        : [childrenKey];
+      const newNode: Node = {};
+      for (const key in node) {
+        if (!skipKeys.includes(key)) {
+          newNode[key] = node[key];
+        }
+      }
       if (needParentId) {
-        // 如果needParentId为true，则将父节点的id添加到该节点的属性中
-        newNode['parentId'] = parentId;
+        newNode.parentId = parentId;
       }
-      if (addFields.length) {
-        // 如果需要添加属性值，则遍历addFields列表，计算对应的属性值
-        for (let i = 0; i < addFields.length; i++) {
-          newNode[addFields[i].fieldName] = addFields[i].callback(node);
+      addFields.forEach(({ fieldName, callback }) => {
+        newNode[fieldName] = callback(node);
+      });
+      ignoreFields.forEach((field) => {
+        if (field !== childrenKey) {
+          delete newNode[field];
         }
-      }
-      if (ignoreFields.length) {
-        // 如果需要忽略某些属性，则遍历ignoreFields列表，将对应的属性从newNode中删除
-        for (let i = 0; i < ignoreFields.length; i++) {
-          delete newNode[ignoreFields[i]];
-        }
-      }
-      // 将newNode存入nodes数组中
+      });
       nodes.push(newNode);
     }
-    if (children) {
-      // 将该节点的所有子节点压入栈中，继续循环直到stack为空
+    if (children && children.length) {
+      // 反向压栈以保证遍历顺序与原树一致（深度优先）
       for (let i = children.length - 1; i >= 0; i--) {
+        const child = children[i];
+        // 缺失 id（undefined / null / ''）时 parentId 归一为 null，
+        // 与 arrayToTree 共用 isEmptyValue 保证语义一致——
+        // 调用方无法区分"根"与"父缺 id"，参见 README。
+        const parentId = node ? (isEmptyValue(node[idKey]) ? null : String(node[idKey])) : null;
         stack.push({
-          node: children[i],
-          children: children[i][childrenKey] || [],
-          parentId: node?.[primaryKey] || ''
+          node: child,
+          children: child[childrenKey] ?? [],
+          parentId
         });
       }
     }
   }
-  // 返回以数组形式储存的所有节点（包括子孙节点）
   return nodes;
 };

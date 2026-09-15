@@ -64,6 +64,7 @@ const myTree = [
 
 // 设置选项，可以为空，或仅设置所需的项目
 const t2aOptions = {
+  idKey: 'id', // 节点id字段的名称。默认为 'id'
   childrenKey: 'list', // 子节点的键名。默认为 'children'
   ignoreFields: [], // 要忽略的字段名列表。默认值为空列表。
   addFields: [], // 要添加的字段名列表及其对应属性值的计算方法。默认为空列表。
@@ -90,12 +91,40 @@ const nodes = treeToArray(tree, t2aOptions);
 
 - **Options** : 一个可选参数对象，用来配置转换方法的具体行为
 
-  | 参数        | 说明                           | 类型   | 默认值     |
-  | ----------- | ------------------------------ | ------ | ---------- |
-  | childrenKey | 自定义节点 children 字段的名称 | string | 'children' |
-  | idKey       | 自定义节点 id 字段的名称       | string | 'id'       |
-  | pidKey      | 自定义节点 pid 字段的名称      | string | 'pid'      |
+  | 参数        | 说明                              | 类型                            | 默认值     |
+  | ----------- | --------------------------------- | ------------------------------- | ---------- |
+  | childrenKey | 自定义节点 children 字段的名称    | string                          | 'children' |
+  | idKey       | 自定义节点 id 字段的名称          | string                          | 'id'       |
+  | pidKey      | 自定义节点 pid 字段的名称         | string                          | 'pid'      |
+  | onDuplicate | 重复 id 时触发，传入所有重复 id    | `(ids: string[]) => void`       | undefined  |
+  | onOrphan    | 节点被丢弃时触发，传入所有被丢弃的节点 | `(nodes: ArrayNode[]) => void`  | undefined  |
 
+### 丢弃节点的规则
+
+`arrayToTree` 默认是**纯函数**——不会向 `console` 输出任何内容。需要监听被丢弃的节点时，通过 `onDuplicate` 和 `onOrphan` 回调：
+
+```js
+import { arrayToTree } from 'tree-conver';
+
+const tree = arrayToTree(input, {
+  onDuplicate: (ids) => console.warn('重复 id:', ids),
+  onOrphan:    (nodes) => console.warn('孤儿节点:', nodes)
+});
+```
+
+以下情况节点会被丢弃：
+
+- 元素为 `null` / `undefined` / 非对象；
+- `idKey` 字段缺失、为 `null` 或空字符串；
+- `id` 在数组中已出现过（保留首次出现）；
+- `pidKey` 的值在之前的节点中找不到匹配的 `id`；
+- 节点处于循环父子链上（如 `A→B→A` 或自引用 `A→A`）——整个环都会被丢弃并通过 `onOrphan` 上报。
+
+如果 `idKey`、`pidKey`、`childrenKey` 三个字段重复（即指向同一个属性），`arrayToTree` 会抛错——这种错误配置会静默破坏数据，必须显式失败。
+
+结果中的 `id` 与 `pid` 仅在使用默认字段名（`idKey='id'`、`pidKey='pid'`）时才归一为 **string**，因此 `node.id === node.pid` 比较总是可靠的。使用自定义字段名时，节点按原样返回（不注入合成的 `id` / `pid` 字段）。输入节点上预存的 `children` 字段会被忽略——树完全由 `pid` 关系重建。
+
+> **注意**：`onOrphan` 回调拿到的是原始输入对象的引用，请勿在回调中原地修改。
 
 ### 返回值
 
@@ -128,9 +157,8 @@ const nodes = treeToArray(tree, t2aOptions);
 
   | 属性        | 描述                                       | 类型          | 默认值      |
   | ----------- | ------------------------------------------ | ------------- | ----------- |
-  | childrenKey | 子节点字段的名称                           | string        | 'children' |
   | idKey       | 节点id字段的名称                           | string        | 'id'       |
-  | pidKey      | 父节点id字段的名称                         | string        | 'pid'      |
+  | childrenKey | 子节点字段的名称                           | string        | 'children' |
   | ignoreFields | 要忽略的字段名称列表。默认值为空列表。 | string[] | [] |
   | addFields | 要添加的字段名称列表和它们对应的属性值计算方法。默认为空列表。 | [{ fieldName: string;callback: (item) => any }] | [] |
   | needParentId | 子节点是否需要父节点的id。默认为true。 | boolean | true |
@@ -138,6 +166,8 @@ const nodes = treeToArray(tree, t2aOptions);
 ### 返回值
 
 返回一个包含所有节点信息的数组，包括它们自己的信息和它们的后代节点的信息。
+
+> **注意**：当某个父节点缺失 `idKey` 字段时，其后代节点的 `parentId` 会等于 `null`，与根节点相同。调用方无法区分"真正的根"与"父节点缺 id"两种情况，如需区分请在传入前补齐 id。
 
 ### 复杂度
 

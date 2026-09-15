@@ -15,8 +15,6 @@
         // 检查未使用的局部变量
         "noUnusedLocals": true,
         // 允许使用 ES 模块的默认导出和命名空间导出
-        "esModuleInterop": true,
-        // 不允许在 catch 语句中使用未知类型
-        "useUnknownInCatchVariables": false
+        "esModuleInterop": true
     }
 }

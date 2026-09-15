@@ -30,6 +30,8 @@
   ],
   "scripts": {
     "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "release": "release-it"
   },
   "devDependencies": {
@@ -38,10 +40,17 @@
     "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.16.3",
     "rollup": "^3.21.5",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^1.6.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.63.3",
+    "@rollup/rollup-darwin-x64": "^4.63.3",
+    "@rollup/rollup-linux-x64-gnu": "^4.63.3",
+    "@rollup/rollup-win32-x64-msvc": "^4.63.3"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "publishConfig": {
     "access": "public",

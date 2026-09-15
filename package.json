@@ -1,7 +1,7 @@
 {
   "name": "tree-conver",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "tree-conver",
   "keywords": [
     "tree-conver",
@@ -10,11 +10,6 @@
   ],
   "license": "MIT",
   "author": "huyikai",
-  "type": "module",
-  "main": "index.js",
-  "files": [
-    "docs"
-  ],
   "workspaces": [
     "packages/tree-conver"
   ],
@@ -25,7 +20,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "lint:style": "stylelint \"./docs/**/*.{css,scss,vue,html}\" --fix",
     "prepare": "husky install",
-    "release": "npm run release --workspaces",
+    "release": "npm run release --workspaces --if-present",
     "serve": "vitepress serve docs"
   },
   "lint-staged": {

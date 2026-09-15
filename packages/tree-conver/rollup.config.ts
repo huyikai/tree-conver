@@ -12,8 +12,9 @@ export default {
     {
       name: 'treeConver',
       file: 'lib/tree-conver.min.js',
-      format: 'iife'
+      format: 'iife',
+      plugins: [terser()]
     }
   ],
-  plugins: [typescript(), terser()]
+  plugins: [typescript()]
 };
