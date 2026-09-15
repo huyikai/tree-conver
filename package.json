@@ -10,6 +10,7 @@
   ],
   "license": "MIT",
   "author": "huyikai",
+  "type": "module",
   "workspaces": [
     "packages/tree-conver"
   ],
