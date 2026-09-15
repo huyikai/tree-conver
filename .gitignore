@@ -20,7 +20,7 @@ selenium-debug.log
 *.sln
 *.local
 cache
-package-lock.json
+# package-lock.json 需要纳入版本控制（CI 的 npm ci 依赖 lockfile）
 yarn.lock
 
 .env
