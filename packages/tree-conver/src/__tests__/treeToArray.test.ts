@@ -49,11 +49,14 @@ describe('treeToArray', () => {
 
   it('adds custom fields via callback', () => {
     const nodes = treeToArray(sample, {
-      addFields: [
-        { fieldName: 'tag', callback: (item) => `tag-${item.id}` }
-      ]
+      addFields: [{ fieldName: 'tag', callback: (item) => `tag-${item.id}` }]
     });
-    expect(nodes.map((n) => n.tag)).toEqual(['tag-1', 'tag-2', 'tag-4', 'tag-3']);
+    expect(nodes.map((n) => n.tag)).toEqual([
+      'tag-1',
+      'tag-2',
+      'tag-4',
+      'tag-3'
+    ]);
   });
 
   it('returns parentId=null (not empty string) when child has no id', () => {

@@ -8,8 +8,8 @@ interface Node {
   [key: string]: any;
 }
 
-interface TreeToArrayOptions {  /** 主键字段名，默认 'id' */
-  idKey?: string;
+interface TreeToArrayOptions {
+  /** 主键字段名，默认 'id' */ idKey?: string;
   /** 子节点字段名，默认 'children' */
   childrenKey?: string;
   /** 需要忽略的字段名列表 */
@@ -48,7 +48,9 @@ export const treeToArray = (
   // 配置自检：相同的 key 在树遍历中含义不同，重叠会导致数据错乱
   if (idKey === childrenKey) {
     throw new Error(
-      `[treeToArray] idKey and childrenKey must be distinct (got ${JSON.stringify({ idKey, childrenKey })})`
+      `[treeToArray] idKey and childrenKey must be distinct (got ${JSON.stringify(
+        { idKey, childrenKey }
+      )})`
     );
   }
 
@@ -67,9 +69,7 @@ export const treeToArray = (
       // 避免 V8 将对象降级为 dictionary mode 影响性能。
       // 仅在 needParentId 时跳过用户自带的 parentId，
       // 避免即将写入的合成值与原值冲突；needParentId=false 时保留原字段。
-      const skipKeys = needParentId
-        ? [childrenKey, 'parentId']
-        : [childrenKey];
+      const skipKeys = needParentId ? [childrenKey, 'parentId'] : [childrenKey];
       const newNode: Node = {};
       for (const key in node) {
         if (!skipKeys.includes(key)) {
@@ -96,7 +96,11 @@ export const treeToArray = (
         // 缺失 id（undefined / null / ''）时 parentId 归一为 null，
         // 与 arrayToTree 共用 isEmptyValue 保证语义一致——
         // 调用方无法区分"根"与"父缺 id"，参见 README。
-        const parentId = node ? (isEmptyValue(node[idKey]) ? null : String(node[idKey])) : null;
+        const parentId = node
+          ? isEmptyValue(node[idKey])
+            ? null
+            : String(node[idKey])
+          : null;
         stack.push({
           node: child,
           children: child[childrenKey] ?? [],

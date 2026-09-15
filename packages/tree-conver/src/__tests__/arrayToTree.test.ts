@@ -13,7 +13,9 @@ describe('arrayToTree', () => {
     expect(tree).toHaveLength(1);
     expect(tree[0].id).toBe('1');
     expect(tree[0].children).toHaveLength(2);
-    expect(tree[0].children!.find((c) => c.id === '2')!.children).toHaveLength(1);
+    expect(tree[0].children!.find((c) => c.id === '2')!.children).toHaveLength(
+      1
+    );
   });
 
   it('supports custom idKey / pidKey / childrenKey', () => {
@@ -41,13 +43,7 @@ describe('arrayToTree', () => {
   });
 
   it('skips entries that are not plain objects', () => {
-    const input = [
-      null,
-      undefined,
-      'string',
-      123,
-      { id: '1', pid: null }
-    ];
+    const input = [null, undefined, 'string', 123, { id: '1', pid: null }];
     const tree = arrayToTree(input as any);
     expect(tree).toHaveLength(1);
   });
@@ -115,9 +111,7 @@ describe('arrayToTree', () => {
   });
 
   it('preserves extra fields on each node', () => {
-    const input = [
-      { id: '1', name: 'root', extra: 'x', pid: null }
-    ];
+    const input = [{ id: '1', name: 'root', extra: 'x', pid: null }];
     const tree = arrayToTree(input);
     expect(tree[0].extra).toBe('x');
   });
@@ -133,7 +127,11 @@ describe('arrayToTree', () => {
     // 结果树完全由 pid 关系生成——避免浅拷贝导致的副作用。
     // 这里的 pre-existing 在 map 中是孤儿，会被丢弃。
     const input = [
-      { id: '1', pid: null, children: [{ id: 'orphan-pre-existing', pid: '1' }] },
+      {
+        id: '1',
+        pid: null,
+        children: [{ id: 'orphan-pre-existing', pid: '1' }]
+      },
       { id: '2', pid: '1' }
     ];
     const tree = arrayToTree(input);
@@ -151,15 +149,15 @@ describe('arrayToTree', () => {
   });
 
   it('throws when idKey === pidKey', () => {
-    expect(() =>
-      arrayToTree([], { idKey: 'id', pidKey: 'id' })
-    ).toThrow('must be distinct');
+    expect(() => arrayToTree([], { idKey: 'id', pidKey: 'id' })).toThrow(
+      'must be distinct'
+    );
   });
 
   it('throws when idKey === childrenKey', () => {
-    expect(() =>
-      arrayToTree([], { idKey: 'id', childrenKey: 'id' })
-    ).toThrow('must be distinct');
+    expect(() => arrayToTree([], { idKey: 'id', childrenKey: 'id' })).toThrow(
+      'must be distinct'
+    );
   });
 
   it('handles numeric ids via toString coercion', () => {
@@ -187,7 +185,10 @@ describe('arrayToTree', () => {
     expect(tree).toHaveLength(1);
     expect(tree[0].id).toBe('root');
     expect(onOrphan).toHaveBeenCalledOnce();
-    expect(onOrphan.mock.calls[0][0].map((n: any) => n.id).sort()).toEqual(['A', 'B']);
+    expect(onOrphan.mock.calls[0][0].map((n: any) => n.id).sort()).toEqual([
+      'A',
+      'B'
+    ]);
   });
 
   it('discards self-referencing nodes (A.pid=A)', () => {

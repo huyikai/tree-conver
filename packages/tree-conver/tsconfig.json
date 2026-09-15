@@ -8,7 +8,11 @@
     "declaration": true, // 生成 `.d.ts` 文件
     "outDir": "./lib/types", // 编译后生成的文件目录
     // 启用resolveJsonModule选项，使得可以import .json文件
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    // 跳过 node_modules 内部声明文件的检查（vite/rollup 类型与本库无关）
+    "skipLibCheck": true,
+    // 类型检查入口：仅源码（测试由 vitest 自行转译，不参与 build）
+    "types": ["node"]
   },
   "exclude": ["**/node_modules/**", "**/lib/**", "**.config.ts"]
 }

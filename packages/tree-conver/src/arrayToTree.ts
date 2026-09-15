@@ -43,6 +43,42 @@ interface Options {
 }
 
 /**
+ * 循环引用检测：带 memo 的链上追溯，整体 O(n)。
+ * - cyclic：已确认处于环上的节点 id（检测到环时整条路径记入）
+ * - safe：已确认可以到达根节点的节点 id
+ * @returns 节点 id 是否陷入循环引用
+ */
+const isCyclicFrom = (
+  startId: string,
+  map: Map<string, TreeNode>,
+  pidOf: Map<string, string | null>,
+  cyclic: Set<string>,
+  safe: Set<string>
+): boolean => {
+  const path: string[] = [];
+  const onPath = new Set<string>();
+  let cursor: string | undefined = startId;
+  while (cursor !== undefined) {
+    if (cyclic.has(cursor)) return true;
+    if (safe.has(cursor)) break;
+    const pid: string | null = pidOf.get(cursor) ?? null;
+    if (pid === null) break; // 到达根
+    if (onPath.has(pid)) {
+      // 检测到环：整条路径上的节点都是环的一部分
+      cyclic.add(pid);
+      path.forEach((id) => cyclic.add(id));
+      return true;
+    }
+    onPath.add(cursor);
+    path.push(cursor);
+    cursor = map.has(pid) ? pid : undefined;
+  }
+  // 走到根或已验证安全的节点：整条链都安全
+  path.forEach((id) => safe.add(id));
+  return false;
+};
+
+/**
  * 将扁平节点数组转换为树形结构。
  *
  * 默认行为（确定性、纯函数，无 console 输出）：
@@ -63,43 +99,23 @@ interface Options {
  * @param options 配置项
  * @returns 树根节点数组
  */
-export const arrayToTree = (
+/**
+ * 第一遍：建索引（归一 id / pid 存在独立映射表中，不污染节点对象）。
+ * 同时收集重复 id 与被丢弃的节点。
+ */
+const buildIndex = (
   array: Array<ArrayNode>,
-  options: Options = {}
-): TreeNode[] => {
-  if (!Array.isArray(array)) {
-    throw new Error('The first argument must be an array.');
-  }
-  const {
-    idKey = 'id',
-    pidKey = 'pid',
-    childrenKey = 'children',
-    onDuplicate,
-    onOrphan
-  } = options;
-
-  // 配置自检：相同的 key 容易导致数据损坏
-  if (idKey === pidKey || idKey === childrenKey || pidKey === childrenKey) {
-    throw new Error(
-      `[arrayToTree] idKey, pidKey and childrenKey must be distinct (got ${JSON.stringify({
-        idKey,
-        pidKey,
-        childrenKey
-      })})`
-    );
-  }
-
-  // 归一值是否写回 'id' / 'pid' 同名字段：
-  // 仅当用户 key 与默认 key 相同时才写，防止覆盖业务字段
-  const writeIdField = idKey === 'id';
-  const writePidField = pidKey === 'pid';
-
-  // 第一遍：建索引（归一 id / pid 存在独立映射表中，不污染节点对象）
+  idKey: string,
+  pidKey: string,
+  childrenKey: string,
+  writeIdField: boolean,
+  writePidField: boolean,
+  duplicates: string[],
+  orphans: ArrayNode[]
+): { map: Map<string, TreeNode>; pidOf: Map<string, string | null> } => {
   const map = new Map<string, TreeNode>();
   // id → 归一后的 pid（string | null，null 表示根）
   const pidOf = new Map<string, string | null>();
-  const duplicates: string[] = [];
-  const orphans: ArrayNode[] = [];
 
   for (const node of array) {
     if (!node || typeof node !== 'object') continue;
@@ -121,43 +137,66 @@ export const arrayToTree = (
     map.set(id, clone);
     pidOf.set(id, pid);
   }
+  return { map, pidOf };
+};
 
-  // 循环引用检测：带 memo 的链上追溯，整体 O(n)。
-  // - cyclic：已确认处于环上的节点 id（检测到环时整条路径记入）
-  // - safe：已确认可以到达根节点的节点 id
+export const arrayToTree = (
+  array: Array<ArrayNode>,
+  options: Options = {}
+): TreeNode[] => {
+  if (!Array.isArray(array)) {
+    throw new Error('The first argument must be an array.');
+  }
+  const {
+    idKey = 'id',
+    pidKey = 'pid',
+    childrenKey = 'children',
+    onDuplicate,
+    onOrphan
+  } = options;
+
+  // 配置自检：相同的 key 容易导致数据损坏
+  if (idKey === pidKey || idKey === childrenKey || pidKey === childrenKey) {
+    throw new Error(
+      `[arrayToTree] idKey, pidKey and childrenKey must be distinct (got ${JSON.stringify(
+        {
+          idKey,
+          pidKey,
+          childrenKey
+        }
+      )})`
+    );
+  }
+
+  // 归一值是否写回 'id' / 'pid' 同名字段：
+  // 仅当用户 key 与默认 key 相同时才写，防止覆盖业务字段
+  const writeIdField = idKey === 'id';
+  const writePidField = pidKey === 'pid';
+
+  // 第一遍：建索引，并收集重复 / 缺 id 的元素
+  const duplicates: string[] = [];
+  const orphans: ArrayNode[] = [];
+  const { map, pidOf } = buildIndex(
+    array,
+    idKey,
+    pidKey,
+    childrenKey,
+    writeIdField,
+    writePidField,
+    duplicates,
+    orphans
+  );
+
+  // 循环引用检测的 memo 集合，由模块级 isCyclicFrom 维护
   const cyclic = new Set<string>();
   const safe = new Set<string>();
-
-  const isCyclicFrom = (startId: string): boolean => {
-    const path: string[] = [];
-    const onPath = new Set<string>();
-    let cursor: string | undefined = startId;
-    while (cursor !== undefined) {
-      if (cyclic.has(cursor)) return true;
-      if (safe.has(cursor)) break;
-      const pid: string | null = pidOf.get(cursor) ?? null;
-      if (pid === null) break; // 到达根
-      if (onPath.has(pid)) {
-        // 检测到环：整条路径上的节点都是环的一部分
-        cyclic.add(pid);
-        path.forEach((id) => cyclic.add(id));
-        return true;
-      }
-      onPath.add(cursor);
-      path.push(cursor);
-      cursor = map.has(pid) ? pid : undefined;
-    }
-    // 走到根或已验证安全的节点：整条链都安全
-    path.forEach((id) => safe.add(id));
-    return false;
-  };
 
   // 第二遍：把每个节点挂到父节点的 children 上
   map.forEach((node, id) => {
     const pid = pidOf.get(id)!;
     if (pid === null) return; // 根节点
     const parent = map.get(pid);
-    if (!parent || isCyclicFrom(id)) {
+    if (!parent || isCyclicFrom(id, map, pidOf, cyclic, safe)) {
       // 找不到父，或陷入循环引用——丢弃
       orphans.push(node);
       return;
